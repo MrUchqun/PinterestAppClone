@@ -26,7 +26,8 @@ import java.lang.reflect.Type
 class HomeFragment : Fragment() {
 
     private lateinit var adapter: PhotosAdapter
-    private var currentPage = MainActivity.FIRST_PAGE
+    private var currentPage = 1
+    private var perPage = 20
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +39,8 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         apiPhotoList()
     }
 
@@ -64,7 +65,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun apiPhotoList() {
-        RetrofitHttp.photoService.getPhotos(++currentPage, MainActivity.PER_PAGE)
+        RetrofitHttp.photoService.getPhotos(++currentPage, perPage)
             .enqueue(object : Callback<PhotoList> {
                 override fun onResponse(call: Call<PhotoList>, response: Response<PhotoList>) {
                     adapter.addPhotos(response.body()!!)
@@ -75,6 +76,5 @@ class HomeFragment : Fragment() {
                     Log.e("@@@", t.toString())
                 }
             })
-        Log.d("@@@", "Exit Retrofit")
     }
 }
