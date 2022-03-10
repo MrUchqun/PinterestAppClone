@@ -14,6 +14,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.activity.MainActivity
 import com.example.pinterestappclone.adapter.PhotosAdapter
+import com.example.pinterestappclone.model.PhotoItem
 import com.example.pinterestappclone.model.PhotoList
 import com.example.pinterestappclone.network.RetrofitHttp
 import com.google.gson.Gson
@@ -27,7 +28,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var adapter: PhotosAdapter
     private var currentPage = 1
-    private var perPage = 20
+    private val perPage = 20
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +66,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun apiPhotoList() {
-        RetrofitHttp.photoService.getPhotos(++currentPage, perPage)
+        RetrofitHttp.photoService.getPhotos(currentPage++, perPage)
             .enqueue(object : Callback<PhotoList> {
                 override fun onResponse(call: Call<PhotoList>, response: Response<PhotoList>) {
                     adapter.addPhotos(response.body()!!)
