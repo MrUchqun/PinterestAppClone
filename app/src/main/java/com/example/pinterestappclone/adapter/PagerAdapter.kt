@@ -7,9 +7,14 @@ import androidx.fragment.app.FragmentPagerAdapter
 class PagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     var fragments = ArrayList<Fragment>()
+    var titles = ArrayList<String>()
 
     fun addFragment(fragment: Fragment) {
         fragments.add(fragment)
+    }
+
+    fun addTitle(title: String) {
+        titles.add(title)
     }
 
     override fun getCount(): Int {
@@ -18,5 +23,9 @@ class PagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         return fragments[position]
+    }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return titles[position]
     }
 }

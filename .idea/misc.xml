@@ -7,6 +7,7 @@
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable-xxhdpi/shape_rounded.xml" value="0.1535" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable-xxhdpi/shape_rounded_tv_btn.xml" value="0.1735" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable-xxhdpi/shape_top_rounded.xml" value="0.2125" />
+        <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable/black_cursor.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable/ic_anim_home.xml" value="0.1855" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable/ic_baseline_more_horiz_24.xml" value="0.1855" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable/ic_bnv_home.xml" value="0.1855" />
@@ -14,15 +15,21 @@
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable/ic_bnv_search.xml" value="0.1855" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable/shape_rounded_catigories.xml" value="0.1855" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable/shape_rounded_for_bnv.xml" value="0.1855" />
+        <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/drawable/shape_rounded_ideas_number.xml" value="0.1575" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/activity_details.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/bnv_main_menu.xml" value="0.27447916666666666" />
+        <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/fragment_ads.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/fragment_details.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/fragment_details_page.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/fragment_home_page.xml" value="0.27447916666666666" />
+        <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/fragment_search_page.xml" value="0.2490740740740741" />
+        <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/fragment_search_result_page.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/ic_bnv_profile.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/item_bnv.xml" value="0.27447916666666666" />
+        <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/item_ideas_page.xml" value="0.2490740740740741" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/item_photos_view.xml" value="0.27447916666666666" />
+        <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/layout/item_search_helper_text.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/menu/bottom_nav_menu.xml" value="0.27447916666666666" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1855" />
         <entry key="..\:/AndroidStudioProjects/PinterestAppClone/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1855" />

@@ -1,6 +1,7 @@
 package com.example.pinterestappclone.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,18 +31,26 @@ class HomeFragment : Fragment() {
     private var currentPage = 1
     private val perPage = 20
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        apiPhotoList()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_home_page, container, false)
-        initView(view)
-        return view
+        return inflater.inflate(R.layout.fragment_home_page, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initView(view)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentPage = 1
         apiPhotoList()
     }
 

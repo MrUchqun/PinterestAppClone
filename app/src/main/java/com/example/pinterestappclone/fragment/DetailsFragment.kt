@@ -3,13 +3,11 @@ package com.example.pinterestappclone.fragment
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowId
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -17,12 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.activity.DetailsActivity
-import com.example.pinterestappclone.activity.MainActivity
 import com.example.pinterestappclone.activity.MainActivity.Companion.profileMe
-import com.example.pinterestappclone.adapter.PhotosAdapter
-import com.example.pinterestappclone.adapter.RelatedPhotosAdapter
+import com.example.pinterestappclone.adapter.ResultPhotosAdapter
 import com.example.pinterestappclone.model.PhotoItem
-import com.example.pinterestappclone.model.PhotoList
 import com.example.pinterestappclone.model.RelatedPhotos
 import com.example.pinterestappclone.network.RetrofitHttp
 import com.squareup.picasso.Picasso
@@ -32,12 +27,12 @@ import retrofit2.Response
 
 class DetailsFragment(var photoItem: PhotoItem) : Fragment() {
 
-    private lateinit var adapter: RelatedPhotosAdapter
+    private lateinit var adapter: ResultPhotosAdapter
     private lateinit var tvRelated: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = RelatedPhotosAdapter(requireContext() as DetailsActivity)
+        adapter = ResultPhotosAdapter(requireContext() as DetailsActivity)
         apiRelatedPhotos(photoItem.id!!)
     }
 
@@ -103,7 +98,7 @@ class DetailsFragment(var photoItem: PhotoItem) : Fragment() {
                 if (photoList.size > 0) {
                     adapter.addPhotos(photoList)
                 } else {
-                    tvRelated.text = "Related images has not found..."
+                    tvRelated.text = getString(R.string.related_photo_not_found)
                 }
             }
 

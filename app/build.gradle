@@ -60,4 +60,7 @@ dependencies {
 
     //LottieAnimationView
     implementation 'com.airbnb.android:lottie:4.2.2'
+
+    //Pager Indicator
+    implementation 'com.tbuonomo:dotsindicator:4.2'
 }

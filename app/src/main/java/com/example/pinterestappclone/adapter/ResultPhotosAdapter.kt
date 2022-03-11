@@ -24,13 +24,20 @@ import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import java.util.logging.Handler
 
-class RelatedPhotosAdapter(private var context: DetailsActivity) :
+class ResultPhotosAdapter(private var context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var photoList = ArrayList<PhotoItem>()
 
     @SuppressLint("NotifyDataSetChanged")
     fun addPhotos(photoList: ArrayList<PhotoItem>) {
+        this.photoList.addAll(photoList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addNewPhotos(photoList: ArrayList<PhotoItem>) {
+        this.photoList.clear()
         this.photoList.addAll(photoList)
         notifyDataSetChanged()
     }
@@ -60,7 +67,6 @@ class RelatedPhotosAdapter(private var context: DetailsActivity) :
 
             holder.ivPhoto.setOnClickListener {
                 callDetails(position)
-                context.finish()
             }
         }
 

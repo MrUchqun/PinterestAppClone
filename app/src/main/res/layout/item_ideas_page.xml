@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="240dp"
+    android:paddingVertical="10dp"
+    android:paddingStart="0dp"
+    android:paddingEnd="10dp">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="120dp"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:src="@color/teal_700"
+            app:shapeAppearanceOverlay="@style/rounded_border" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_rounded_ideas_number"
+            android:backgroundTint="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="3dp">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/ic_copy" />
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="1"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
+        android:src="@color/purple_200"
+        app:shapeAppearanceOverlay="@style/circle"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp" />
+
+</FrameLayout>
