@@ -7,15 +7,19 @@
         android:id="@+id/iv_ads"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Shop Online these products!"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="35dp"
+        android:fontFamily="@font/average_sans"
+        android:text="Shop Online this products!"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
 </FrameLayout>

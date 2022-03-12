@@ -19,13 +19,27 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="rounded_border">
+    <style name="rounded_border_15">
         <item name="cornerSize">15dp</item>
+    </style>
+
+    <style name="rounded_border_20">
+        <item name="cornerSize">20dp</item>
     </style>
 
     <style name="top_rounded">
         <item name="cornerSizeTopLeft">20dp</item>
         <item name="cornerSizeTopRight">20dp</item>
+    </style>
+
+    <style name="left_rounded">
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+    </style>
+
+    <style name="right_rounded">
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
     </style>
 
     <style name="TabLayoutTextStyle">

@@ -1,5 +1,6 @@
 package com.example.pinterestappclone.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -13,8 +14,17 @@ import com.example.pinterestappclone.R
 import com.example.pinterestappclone.model.PhotoList
 import com.squareup.picasso.Picasso
 
-class IdeaPageAdapter(var context: Context, var list: PhotoList) :
+class IdeaPageAdapter(var context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var list = PhotoList()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addList(list: PhotoList) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view =
@@ -37,8 +47,8 @@ class IdeaPageAdapter(var context: Context, var list: PhotoList) :
             Picasso.get().load(photo.user!!.profile_image!!.medium)
                 .placeholder(ColorDrawable(Color.parseColor(photo.color))).into(holder.ivProfile)
 
-            val count = photo.likes!!
-            holder.tvCount.setText(if (count > 9) count % 10 else count)
+            val count = photo.likes!!.toInt()
+            holder.tvCount.text = ((if (count > 9) count % 10 else count)).toString()
         }
     }
 

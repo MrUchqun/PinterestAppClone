@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.model.PhotoItem
 import com.example.pinterestappclone.model.PhotoList
@@ -18,18 +19,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AdsFragment : Fragment() {
-
-    companion object {
-        const val LANDSCAPE = "landscape"
-        const val PORTRAIT = "portrait"
-    }
+class AdsFragment(var photoItem: PhotoItem) : Fragment() {
 
     private lateinit var ivAds: ImageView
 
     override fun onResume() {
         super.onResume()
-        apiRandomPhoto()
+        Glide.with(requireContext()).load(photoItem.urls!!.regular)
+            .placeholder(ColorDrawable(Color.parseColor(photoItem.color)))
+            .into(ivAds)
     }
 
     override fun onCreateView(
@@ -43,21 +41,6 @@ class AdsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ivAds = view.findViewById(R.id.iv_ads)
-    }
-
-    private fun apiRandomPhoto() {
-        RetrofitHttp.photoService.getRandomPhotos("product", LANDSCAPE, 1)
-            .enqueue(object : Callback<PhotoList> {
-                override fun onResponse(call: Call<PhotoList>, response: Response<PhotoList>) {
-                    Picasso.get().load(response.body()!![0].user!!.profile_image!!.medium)
-                        .placeholder(ColorDrawable(Color.parseColor(response.body()!![0].color)))
-                        .into(ivAds)
-                }
-
-                override fun onFailure(call: Call<PhotoList>, t: Throwable) {
-                    Log.e("@@@", t.message.toString())
-                }
-            })
     }
 
 }

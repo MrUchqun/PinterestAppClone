@@ -1,22 +1,11 @@
 package com.example.pinterestappclone.fragment
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
-import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.*
-import android.view.View.*
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -25,38 +14,44 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.pinterestappclone.R
-import com.example.pinterestappclone.activity.MainActivity
-import com.example.pinterestappclone.adapter.HelperTextAdapter
 import com.example.pinterestappclone.adapter.IdeaPageAdapter
 import com.example.pinterestappclone.adapter.PagerAdapter
-import com.example.pinterestappclone.adapter.ResultPhotosAdapter
-import com.example.pinterestappclone.fragment.AdsFragment.Companion.PORTRAIT
-import com.example.pinterestappclone.managers.PrefsManager
+import com.example.pinterestappclone.adapter.PopularAdapter
 import com.example.pinterestappclone.model.PhotoList
-import com.example.pinterestappclone.model.ResultPhotos
+import com.example.pinterestappclone.model.Topic
 import com.example.pinterestappclone.network.RetrofitHttp
-import com.google.android.material.tabs.TabLayout
-import com.google.gson.reflect.TypeToken
-import com.squareup.picasso.Picasso
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.reflect.Type
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SearchFragment : Fragment() {
 
-    private lateinit var prefsManager: PrefsManager
-    private lateinit var helperAdapter: HelperTextAdapter
+    companion object {
+        const val LANDSCAPE = "landscape"
+        const val PORTRAIT = "portrait"
+        const val DELAY_MS: Long = 2500 //delay in milliseconds before task is to be executed
+        const val PERIOD_MS: Long = 5000 // time in milliseconds between successive task executions.
+    }
+
     private lateinit var ideasAdapter: IdeaPageAdapter
+    private lateinit var popularAdapter: PopularAdapter
+    private lateinit var pagerAdapter: PagerAdapter
+
+    private lateinit var vpAds: ViewPager
+    private lateinit var indicator: WormDotsIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefsManager = PrefsManager.getInstance(requireContext())!!
-        helperAdapter = HelperTextAdapter(requireContext(), getHistory())
-        apiRandomPhotos()
+        ideasAdapter = IdeaPageAdapter(requireContext())
+        popularAdapter = PopularAdapter(requireContext())
+
+        apiRandomPhotos("products", LANDSCAPE, 7, 2)
+        apiRandomPhotos("science", PORTRAIT, 10, 1)
+        apiTopics(1, 8)
     }
 
     override fun onCreateView(
@@ -64,74 +59,90 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search_page, container, false)
-        initViews(view)
-        return view
+        return inflater.inflate(R.layout.fragment_search_page, container, false)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews(view)
+    }
+
     private fun initViews(view: View) {
-        val etSearch = view.findViewById<EditText>(R.id.et_search)
-        val ivSearch = view.findViewById<ImageView>(R.id.iv_ic_search)
-        val ivClearTxt = view.findViewById<ImageView>(R.id.iv_clear_text)
-        val tvCancel = view.findViewById<TextView>(R.id.tv_cancel)
+        val tvSearch = view.findViewById<TextView>(R.id.tv_search)
 
-        val vpAds = view.findViewById<ViewPager>(R.id.vp_ads)
-        val pagerAdapter = PagerAdapter(requireActivity().supportFragmentManager)
-        for (i in 0..7)
-            pagerAdapter.addFragment(AdsFragment())
-        vpAds.adapter = pagerAdapter
-        val indicator = view.findViewById<WormDotsIndicator>(R.id.dots_indicator)
-        indicator.setViewPager(vpAds)
+        tvSearch.setOnClickListener {
+            replaceFragment(SearchResultFragment("apple"))
+        }
 
+        setupAds(view)
+        refreshIdeasAdapter(view)
+        refreshPopularAdapter(view)
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val backStateName = fragment.javaClass.name
+        val manager: FragmentManager = parentFragmentManager
+        val ft: FragmentTransaction = manager.beginTransaction()
+        ft.replace(R.id.view_container, fragment)
+        ft.addToBackStack(backStateName)
+        ft.commit()
+    }
+
+    private fun setupAds(view: View) {
+        vpAds = view.findViewById(R.id.vp_ads)
+        indicator = view.findViewById(R.id.dots_indicator)
+        pagerAdapter = PagerAdapter(requireActivity().supportFragmentManager)
+        automateViewPagerSwiping()
+    }
+
+    private fun refreshIdeasAdapter(view: View) {
         val rvIdeas = view.findViewById<RecyclerView>(R.id.rv_ideas)
         rvIdeas.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvIdeas.adapter = ideasAdapter
-
-        val rvHelper = view.findViewById<RecyclerView>(R.id.rv_helper)
-        rvHelper.layoutManager = GridLayoutManager(requireContext(), 1)
-
-
-        etSearch.setOnTouchListener { _, _ ->
-            ivSearch.visibility = GONE
-            rvHelper.visibility = VISIBLE
-            rvHelper.adapter = helperAdapter
-            false
-        }
-
-        etSearch.setOnEditorActionListener { v, actionId, event ->
-            if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
-                if (etSearch.text.isNotEmpty() && etSearch.text.isNotBlank()) {
-                    val text = etSearch.text.toString()
-                    helperAdapter.addHelper(text)
-                    replaceFragment(ExploreFragment(text))
-                }
-            }
-            false
-        }
-
-        etSearch.addTextChangedListener {
-            ivClearTxt.visibility = if (etSearch.text.isNotEmpty()) VISIBLE
-            else INVISIBLE
-        }
-
-        ivClearTxt.setOnClickListener {
-            etSearch.text.clear()
-        }
-
-        rvHelper.setOnTouchListener { _, _ ->
-            ivSearch.visibility = VISIBLE
-            inVisibleCursor(etSearch, rvHelper)
-            false
-        }
     }
 
-    private fun apiRandomPhotos() {
-        RetrofitHttp.photoService.getRandomPhotos("news", PORTRAIT, 8)
+    private fun refreshPopularAdapter(view: View) {
+        val rvPopular = view.findViewById<RecyclerView>(R.id.rv_popular)
+        rvPopular.layoutManager = GridLayoutManager(requireContext(), 2)
+        rvPopular.adapter = popularAdapter
+    }
+
+    private fun automateViewPagerSwiping() {
+        val handler = Handler()
+        val update = Runnable {
+            if (vpAds.currentItem == pagerAdapter.count - 1) {
+                vpAds.currentItem = 0
+            } else {
+                vpAds.setCurrentItem(vpAds.currentItem + 1, true)
+            }
+        }
+        val timer = Timer()
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                handler.post(update)
+            }
+        }, DELAY_MS, PERIOD_MS)
+    }
+
+    /* functions for call network */
+
+    private fun apiRandomPhotos(query: String, orientation: String, count: Int, number: Int) {
+        RetrofitHttp.photoService.getRandomPhotos(query, orientation, count)
             .enqueue(object : Callback<PhotoList> {
                 override fun onResponse(call: Call<PhotoList>, response: Response<PhotoList>) {
-                    ideasAdapter = IdeaPageAdapter(requireContext(), response.body()!!)
+                    if (number == 1) {
+                        ideasAdapter.addList(response.body()!!)
+                    }
+
+                    if (number == 2) {
+                        if (pagerAdapter.fragments.size == 0) {
+                            for (item in response.body()!!)
+                                pagerAdapter.addFragment(AdsFragment(item))
+                        }
+                        vpAds.adapter = pagerAdapter
+                        indicator.setViewPager(vpAds)
+                    }
                 }
 
                 override fun onFailure(call: Call<PhotoList>, t: Throwable) {
@@ -140,46 +151,19 @@ class SearchFragment : Fragment() {
             })
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        val backStateName = fragment.javaClass.name
-        val manager: FragmentManager = requireActivity().supportFragmentManager
-        val fragmentPopped: Boolean = manager.popBackStackImmediate(backStateName, 0)
-        if (!fragmentPopped) { //fragment not in back stack, create it.
-            val ft: FragmentTransaction = manager.beginTransaction()
-            ft.replace(R.id.view_container, fragment)
-            ft.addToBackStack(backStateName)
-            ft.commit()
-        }
+    private fun apiTopics(page: Int, perPage: Int) {
+        RetrofitHttp.photoService.getTopics(page, perPage)
+            .enqueue(object : Callback<ArrayList<Topic>> {
+                override fun onResponse(
+                    call: Call<ArrayList<Topic>>,
+                    response: Response<ArrayList<Topic>>
+                ) {
+                    popularAdapter.addPhotos(response.body()!!)
+                }
+
+                override fun onFailure(call: Call<ArrayList<Topic>>, t: Throwable) {
+                    Log.e("@@@", t.message.toString())
+                }
+            })
     }
-
-    private fun getHistory(): ArrayList<String> {
-        val type: Type = object : TypeToken<ArrayList<String>>() {}.type
-        return prefsManager.getArrayList(PrefsManager.KEY_LIST, type)
-    }
-
-    private fun refreshAdapter(viewPager: ViewPager, tabLayout: TabLayout, text: String) {
-        val pagerAdapter = PagerAdapter(requireActivity().supportFragmentManager)
-        pagerAdapter.addFragment(ExploreFragment(text))
-
-        pagerAdapter.addTitle(getString(R.string.tab_explore))
-        pagerAdapter.addFragment(ProfilesFragment(text))
-
-        pagerAdapter.addTitle(getString(R.string.tab_profiles))
-        viewPager.adapter = pagerAdapter
-
-        tabLayout.setupWithViewPager(viewPager)
-    }
-
-    private fun inVisibleCursor(etSearch: EditText, v: View) {
-        val outRect = Rect()
-        etSearch.getGlobalVisibleRect(outRect)
-        etSearch.clearFocus()
-
-        //Keyboard hide command
-        val imm: InputMethodManager =
-            v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(v.windowToken, 0)
-    }
-
-
 }

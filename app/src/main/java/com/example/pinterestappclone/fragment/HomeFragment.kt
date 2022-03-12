@@ -27,13 +27,20 @@ import java.lang.reflect.Type
 
 class HomeFragment : Fragment() {
 
+    private lateinit var rvHome: RecyclerView
     private lateinit var adapter: PhotosAdapter
     private var currentPage = 1
     private val perPage = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        adapter = PhotosAdapter(requireContext())
         apiPhotoList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshAdapter(true)
     }
 
     override fun onCreateView(
@@ -48,17 +55,10 @@ class HomeFragment : Fragment() {
         initView(view)
     }
 
-    override fun onResume() {
-        super.onResume()
-        currentPage = 1
-        apiPhotoList()
-    }
-
     private fun initView(view: View) {
-        val rvHome = view.findViewById<RecyclerView>(R.id.rv_home)
+        rvHome = view.findViewById(R.id.rv_home)
         rvHome.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
-        refreshAdapter(rvHome)
+        refreshAdapter(false)
         rvHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -69,9 +69,15 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun refreshAdapter(recyclerView: RecyclerView) {
-        adapter = PhotosAdapter(requireContext())
-        recyclerView.adapter = adapter
+    @SuppressLint("NotifyDataSetChanged")
+    private fun refreshAdapter(isRefresh: Boolean) {
+        if (!isRefresh) {
+            rvHome.adapter = adapter
+        } else {
+            rvHome.post {
+                (rvHome.adapter as PhotosAdapter).notifyDataSetChanged()
+            }
+        }
     }
 
     private fun apiPhotoList() {
