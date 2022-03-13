@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         adapter.addFragment(HomeFragment())
         adapter.addFragment(SearchFragment())
         adapter.addFragment(CommentFragment())
+        adapter.addFragment(MyProfileFragment())
         return adapter
     }
 

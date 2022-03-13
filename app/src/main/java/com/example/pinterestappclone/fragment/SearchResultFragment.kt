@@ -1,12 +1,9 @@
 package com.example.pinterestappclone.fragment
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
-import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -23,30 +20,22 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.adapter.HelperTextAdapter
 import com.example.pinterestappclone.adapter.PagerAdapter
-import com.example.pinterestappclone.adapter.PhotosAdapter
-import com.example.pinterestappclone.adapter.ResultPhotosAdapter
 import com.example.pinterestappclone.managers.PrefsManager
-import com.example.pinterestappclone.model.ResultPhotos
-import com.example.pinterestappclone.network.RetrofitHttp
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.reflect.TypeToken
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.reflect.Type
 
 class SearchResultFragment(private val textParent: String?) : Fragment() {
 
     private lateinit var prefsManager: PrefsManager
     private lateinit var helperAdapter: HelperTextAdapter
+    private var clickCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +66,7 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
         // initialize all view elements
         val ivBtnBack = view.findViewById<ImageView>(R.id.iv_btn_back)
         val etSearch = view.findViewById<EditText>(R.id.et_search)
+        val ivClear = view.findViewById<ImageView>(R.id.iv_clear_text)
         val rvHelper = view.findViewById<RecyclerView>(R.id.rv_helper)
         val tvCancel = view.findViewById<TextView>(R.id.tv_cancel)
         val llContainer = view.findViewById<LinearLayout>(R.id.ll_container)
@@ -103,7 +93,7 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
         } else {
 
             // hide keyboard
-            hideKeyboardFrom(requireContext(), view)
+            hideKeyboardFrom(requireContext(), view, etSearch)
 
             // hide cancel button
             tvCancel.visibility = GONE
@@ -136,30 +126,50 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
                 // check etSearch text not empty
                 if (etSearch.text.isNotEmpty() && etSearch.text.isNotBlank()) {
 
-                    val text = etSearch.text.toString()
+                    if (clickCount == 0) {
 
-                    // add last search text to prefs manager
-                    helperAdapter.addHelper(text)
+                        val text = etSearch.text.toString()
 
-                    // hide keyboard
-                    hideKeyboardFrom(requireContext(), view)
+                        // add last search text to prefs manager
+                        helperAdapter.addHelper(text)
 
-                    // back button show
-                    ivBtnBack.visibility = VISIBLE
+                        // hide keyboard
+                        hideKeyboardFrom(requireContext(), view, etSearch)
 
-                    // cancel button hide
-                    tvCancel.visibility = GONE
+                        // back button show
+                        ivBtnBack.visibility = VISIBLE
 
-                    // open search page
-                    visibleViewPager(rvHelper, llContainer, vpFilter, tlFilter, text)
+                        // cancel button hide
+                        tvCancel.visibility = GONE
+
+                        // open search page
+                        visibleViewPager(rvHelper, llContainer, vpFilter, tlFilter, text)
+
+                        // update click count
+                        clickCount++
+
+                    } else {
+
+                        // open new fragment for research
+                        replaceFragment(SearchResultFragment(etSearch.text.toString()))
+
+                    }
                 }
             }
             false
         }
 
-        // open new fragment for research
+
         etSearch.setOnTouchListener { _, _ ->
-            replaceFragment(SearchResultFragment(etSearch.text.toString()))
+            // show rvHelper
+            refreshAdapter(rvHelper)
+
+            // gone back button
+            ivBtnBack.visibility = GONE
+
+            // show cancel button
+            tvCancel.visibility = VISIBLE
+
             false
         }
     }
@@ -196,14 +206,15 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
         }
     }
 
-    private fun hideKeyboardFrom(context: Context, view: View) {
+    private fun hideKeyboardFrom(context: Context, view: View, editText: EditText) {
+        editText.clearFocus()
         val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun getHistory(): ArrayList<String> {
         val type: Type = object : TypeToken<ArrayList<String>>() {}.type
-        return prefsManager.getArrayList(PrefsManager.KEY_LIST, type)
+        return prefsManager.getArrayList(PrefsManager.KEY_ARRAY_LIST, type)
     }
 
     private fun visibleViewPager(

@@ -14,6 +14,7 @@ import com.example.pinterestappclone.R
 import com.example.pinterestappclone.adapter.PagerAdapter
 import com.example.pinterestappclone.fragment.DetailsFragment
 import com.example.pinterestappclone.fragment.HomeFragment
+import com.example.pinterestappclone.managers.PrefsManager
 import com.example.pinterestappclone.model.PhotoItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -21,10 +22,13 @@ import java.lang.reflect.Type
 
 class DetailsActivity : AppCompatActivity() {
 
+    private var prefsManager: PrefsManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarColor()
         setContentView(R.layout.activity_details)
+        prefsManager = PrefsManager.getInstance(this)
         initViews()
     }
 
@@ -33,7 +37,11 @@ class DetailsActivity : AppCompatActivity() {
         refreshAdapter(vpDetails, getList(), getPosition())
     }
 
-    private fun refreshAdapter(viewPager: ViewPager, photoList: ArrayList<PhotoItem>, position: Int) {
+    private fun refreshAdapter(
+        viewPager: ViewPager,
+        photoList: ArrayList<PhotoItem>,
+        position: Int
+    ) {
         val adapter = PagerAdapter(supportFragmentManager)
         for (photoItem in photoList) {
             adapter.addFragment(DetailsFragment(photoItem))
@@ -43,9 +51,10 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     private fun getList(): ArrayList<PhotoItem> {
-        val json = intent.getStringExtra("photoList")
         val type: Type = object : TypeToken<ArrayList<PhotoItem>>() {}.type
-        return Gson().fromJson(json, type)
+        val photoList = prefsManager!!.getArrayList<PhotoItem>(PrefsManager.KEY_PHOTO_LIST, type)
+        prefsManager!!.removeData(PrefsManager.KEY_PHOTO_LIST)
+        return photoList
     }
 
     private fun getPosition(): Int {

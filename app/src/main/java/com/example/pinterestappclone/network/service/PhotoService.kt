@@ -1,6 +1,7 @@
 package com.example.pinterestappclone.network.service
 
 import com.example.pinterestappclone.model.*
+import com.example.pinterestappclone.model.profile.ProfileResp
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -10,7 +11,6 @@ import retrofit2.http.Query
 interface PhotoService {
 
     companion object {
-
 
         private const val ACCESS_KEY = "ACCESS_KEY"
         const val client_id = "Client-ID"
@@ -54,5 +54,9 @@ interface PhotoService {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Call<ArrayList<Topic>>
+
+    @Headers("Authorization:$client_id $ACCESS_KEY")
+    @GET("users/{username}")
+    fun getUser(@Path("username") username: String): Call<ProfileResp>
 
 }

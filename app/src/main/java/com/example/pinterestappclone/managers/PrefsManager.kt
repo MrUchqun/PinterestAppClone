@@ -14,7 +14,8 @@ class PrefsManager(context: Context) {
 
     companion object {
 
-        const val KEY_LIST = "arrayList"
+        const val KEY_ARRAY_LIST = "arrayList"
+        const val KEY_PHOTO_LIST = "photoList"
 
         private var prefsManager: PrefsManager? = null
 
@@ -38,5 +39,11 @@ class PrefsManager(context: Context) {
         val json: String? = sharedPreferences.getString(key, null)
         return if (json != null) Gson().fromJson(json, type)
         else ArrayList()
+    }
+
+    fun removeData(key: String?) {
+        val prefsEditor = sharedPreferences.edit()
+        prefsEditor.remove(key)
+        prefsEditor.apply()
     }
 }

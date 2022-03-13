@@ -9,12 +9,15 @@ import android.view.ViewGroup
 import android.view.ViewParent
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.adapter.PagerAdapter
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class CommentFragment : Fragment() {
 
@@ -41,8 +44,9 @@ class CommentFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        tlFilter = view.findViewById(R.id.tl_filter)
+        tlFilter = view.findViewById<TabLayout>(R.id.tl_filter)
         vpFilter = view.findViewById(R.id.vp_filter)
+        vpFilter.adapter = PagerAdapter(parentFragmentManager)
         val ivParams = view.findViewById<ImageView>(R.id.iv_params)
 
         refreshAdapter()

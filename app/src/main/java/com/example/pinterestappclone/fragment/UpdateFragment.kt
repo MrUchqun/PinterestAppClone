@@ -29,7 +29,6 @@ class UpdateFragment : Fragment() {
         super.onCreate(savedInstanceState)
         updatesAdapter = UpdatesAdapter(requireContext())
         apiTopics(currentPage++, perPage)
-        Log.d("@@@UpdateFragment", "onCreate: ")
     }
 
     override fun onCreateView(
@@ -37,13 +36,11 @@ class UpdateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("@@@UpdateFragment", "onCreateView: ")
         return inflater.inflate(R.layout.fragment_update_page, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("@@@UpdateFragment", "onViewCreated: ")
         initViews(view)
     }
 
@@ -59,49 +56,6 @@ class UpdateFragment : Fragment() {
                 }
             }
         })
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onResume() {
-        super.onResume()
-        (rvUpdates.adapter as UpdatesAdapter).notifyDataSetChanged()
-        Log.d("@@@UpdateFragment", "onResume: ")
-    }
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d("@@@UpdateFragment", "onAttach: ")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("@@@UpdateFragment", "onStart: ")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("@@@UpdateFragment", "onPause: ")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("@@@UpdateFragment", "onStop: ")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("@@@UpdateFragment", "onDestroyView: ")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("@@@UpdateFragment", "onDestroy: ")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("@@@UpdateFragment", "onDetach: ")
     }
 
     private fun apiTopics(page: Int, perPage: Int) {

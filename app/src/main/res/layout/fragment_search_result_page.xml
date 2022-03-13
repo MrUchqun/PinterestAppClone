@@ -48,14 +48,15 @@
                     android:textColor="@color/black"
                     android:textColorHint="#8C8C8C"
                     android:textCursorDrawable="@drawable/black_cursor"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+                    android:textSize="17sp" />
 
                 <ImageView
+                    android:id="@+id/iv_clear_text"
                     android:layout_width="27dp"
                     android:layout_height="27dp"
                     android:layout_margin="10dp"
-                    android:src="@drawable/ic_camera"
+                    android:src="@drawable/ic_baseline_cancel_24"
+                    android:visibility="invisible"
                     app:tint="@color/black" />
 
             </LinearLayout>

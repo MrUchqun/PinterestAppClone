@@ -24,13 +24,13 @@ class HelperTextAdapter(context: Context, var helperList: ArrayList<String>) :
         newList.addAll(helperList)
         helperList.clear()
         helperList.addAll(newList)
-        prefsManager!!.saveArrayList(PrefsManager.KEY_LIST, helperList)
+        prefsManager!!.saveArrayList(PrefsManager.KEY_ARRAY_LIST, helperList)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun clearHelper(element: String) {
         helperList.remove(element)
-        prefsManager!!.saveArrayList(PrefsManager.KEY_LIST, helperList)
+        prefsManager!!.saveArrayList(PrefsManager.KEY_ARRAY_LIST, helperList)
         notifyDataSetChanged()
     }
 

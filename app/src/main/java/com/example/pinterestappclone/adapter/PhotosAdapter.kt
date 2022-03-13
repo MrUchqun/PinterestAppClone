@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.activity.DetailsActivity
+import com.example.pinterestappclone.managers.PrefsManager
 import com.example.pinterestappclone.model.PhotoList
 import com.google.gson.Gson
 
 class PhotosAdapter(private var context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private val prefsManager = PrefsManager.getInstance(context)
     private var photoList = PhotoList()
 
     @SuppressLint("NotifyDataSetChanged")
@@ -48,7 +50,8 @@ class PhotosAdapter(private var context: Context) :
 
         if (holder is PhotoViewHolder) {
             holder.tvDescription.text = photoItem.user!!.bio
-            Glide.with(context).load(photoUrl).placeholder(ColorDrawable(Color.parseColor(photoColor)))
+            Glide.with(context).load(photoUrl)
+                .placeholder(ColorDrawable(Color.parseColor(photoColor)))
                 .into(holder.ivPhoto)
 
             holder.ivPhoto.setOnClickListener {
@@ -60,9 +63,8 @@ class PhotosAdapter(private var context: Context) :
 
     private fun callDetails(position: Int) {
         val intent = Intent(context, DetailsActivity::class.java)
-        val json = Gson().toJson(photoList)
-        intent.putExtra("photoList", json)
         intent.putExtra("position", position)
+        prefsManager!!.saveArrayList(PrefsManager.KEY_PHOTO_LIST, photoList)
         context.startActivity(intent)
     }
 

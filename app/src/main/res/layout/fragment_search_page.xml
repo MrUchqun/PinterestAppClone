@@ -143,7 +143,6 @@
                     android:textSize="17sp" />
 
                 <ImageView
-                    android:id="@+id/iv_clear_text"
                     android:layout_width="27dp"
                     android:layout_height="27dp"
                     android:layout_marginVertical="8dp"
