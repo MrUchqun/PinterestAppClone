@@ -11,7 +11,8 @@ interface PhotoService {
 
     companion object {
 
-        private const val ACCESS_KEY = "your access key"
+
+        private const val ACCESS_KEY = "ACCESS_KEY"
         const val client_id = "Client-ID"
     }
 
@@ -30,6 +31,14 @@ interface PhotoService {
         @Query("query") query: String,
         @Query("per_page") perPage: Int
     ): Call<ResultPhotos>
+
+    @Headers("Authorization:$client_id $ACCESS_KEY")
+    @GET("search/users")
+    fun getSearchProfile(
+        @Query("page") page: Int,
+        @Query("query") query: String,
+        @Query("per_page") perPage: Int
+    ): Call<ResultProfiles>
 
     @Headers("Authorization:$client_id $ACCESS_KEY")
     @GET("photos/random")
