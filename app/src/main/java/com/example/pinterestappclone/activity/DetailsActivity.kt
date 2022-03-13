@@ -59,4 +59,5 @@ class DetailsActivity : AppCompatActivity() {
         }
         window.statusBarColor = Color.BLACK
     }
+
 }

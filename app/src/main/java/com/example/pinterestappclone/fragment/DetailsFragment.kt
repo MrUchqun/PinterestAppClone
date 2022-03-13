@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.activity.DetailsActivity
 import com.example.pinterestappclone.activity.MainActivity.Companion.profileMe
@@ -20,7 +21,6 @@ import com.example.pinterestappclone.adapter.ResultPhotosAdapter
 import com.example.pinterestappclone.model.PhotoItem
 import com.example.pinterestappclone.model.RelatedPhotos
 import com.example.pinterestappclone.network.RetrofitHttp
-import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,17 +73,17 @@ class DetailsFragment(var photoItem: PhotoItem) : Fragment() {
         val s2 = photoItem.description
         val s3 = photoItem.user!!.name
 
-        Picasso.get().load(photoItem.urls!!.small)
+        Glide.with(requireContext()).load(photoItem.urls!!.small)
             .placeholder(ColorDrawable(Color.parseColor(photoItem.color))).into(ivPhoto)
 
-        Picasso.get().load(photoItem.user!!.profile_image!!.large)
+        Glide.with(requireContext()).load(photoItem.user!!.profile_image!!.large)
             .placeholder(ColorDrawable(Color.parseColor(photoItem.color))).into(ivProfile)
 
         tvFullName.text = photoItem.user!!.name
         tvFollowers.text = "${photoItem.user!!.total_photos} Followers"
         tvDescription.text = getDescription(s1, s2, s3)
 
-        Picasso.get().load(profileMe)
+        Glide.with(requireContext()).load(profileMe)
             .placeholder(ColorDrawable(Color.parseColor(photoItem.color))).into(ivProfileMe)
 
         ivBtnBack.setOnClickListener {

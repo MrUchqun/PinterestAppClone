@@ -21,6 +21,7 @@ data class Topic(
     val owners: List<User>?=null,
     @SerializedName("cover_photo")
     val coverPhoto: CoverPhoto?=null,
+    @SerializedName("preview_photos")
     val previewPhotos: List<PreviewPhoto>?=null
 )
 

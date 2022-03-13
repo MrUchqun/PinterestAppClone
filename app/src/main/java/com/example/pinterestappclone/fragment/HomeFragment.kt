@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
     private lateinit var rvHome: RecyclerView
     private lateinit var adapter: PhotosAdapter
     private var currentPage = 1
-    private val perPage = 20
+    private var perPage = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +38,10 @@ class HomeFragment : Fragment() {
         apiPhotoList()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-        refreshAdapter(true)
+        (rvHome.adapter as PhotosAdapter).notifyDataSetChanged()
     }
 
     override fun onCreateView(
@@ -58,7 +59,7 @@ class HomeFragment : Fragment() {
     private fun initView(view: View) {
         rvHome = view.findViewById(R.id.rv_home)
         rvHome.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        refreshAdapter(false)
+        rvHome.adapter = adapter
         rvHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -67,17 +68,6 @@ class HomeFragment : Fragment() {
                 }
             }
         })
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun refreshAdapter(isRefresh: Boolean) {
-        if (!isRefresh) {
-            rvHome.adapter = adapter
-        } else {
-            rvHome.post {
-                (rvHome.adapter as PhotosAdapter).notifyDataSetChanged()
-            }
-        }
     }
 
     private fun apiPhotoList() {

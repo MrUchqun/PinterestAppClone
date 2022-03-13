@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.model.PhotoList
-import com.squareup.picasso.Picasso
 
 class IdeaPageAdapter(var context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -41,10 +41,10 @@ class IdeaPageAdapter(var context: Context) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val photo = list[position]
         if (holder is IdeasViewHolder) {
-            Picasso.get().load(photo.urls!!.thumb)
+            Glide.with(context).load(photo.urls!!.thumb)
                 .placeholder(ColorDrawable(Color.parseColor(photo.color))).into(holder.ivPhoto)
 
-            Picasso.get().load(photo.user!!.profile_image!!.medium)
+            Glide.with(context).load(photo.user!!.profile_image!!.medium)
                 .placeholder(ColorDrawable(Color.parseColor(photo.color))).into(holder.ivProfile)
 
             val count = photo.likes!!.toInt()

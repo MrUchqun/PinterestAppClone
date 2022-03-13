@@ -48,10 +48,15 @@ class SearchFragment : Fragment() {
         super.onCreate(savedInstanceState)
         ideasAdapter = IdeaPageAdapter(requireContext())
         popularAdapter = PopularAdapter(requireContext())
+        pagerAdapter = PagerAdapter(requireActivity().supportFragmentManager)
 
-        apiRandomPhotos("products", LANDSCAPE, 7, 2)
         apiRandomPhotos("science", PORTRAIT, 10, 1)
         apiTopics(1, 8)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        apiRandomPhotos("products", LANDSCAPE, 7, 2)
     }
 
     override fun onCreateView(
@@ -71,7 +76,7 @@ class SearchFragment : Fragment() {
         val tvSearch = view.findViewById<TextView>(R.id.tv_search)
 
         tvSearch.setOnClickListener {
-            replaceFragment(SearchResultFragment("apple"))
+            replaceFragment(SearchResultFragment(null))
         }
 
         setupAds(view)
@@ -91,8 +96,12 @@ class SearchFragment : Fragment() {
     private fun setupAds(view: View) {
         vpAds = view.findViewById(R.id.vp_ads)
         indicator = view.findViewById(R.id.dots_indicator)
-        pagerAdapter = PagerAdapter(requireActivity().supportFragmentManager)
         automateViewPagerSwiping()
+    }
+
+    private fun refreshAdsAdapter() {
+        vpAds.adapter = pagerAdapter
+        indicator.setViewPager(vpAds)
     }
 
     private fun refreshIdeasAdapter(view: View) {
@@ -140,8 +149,7 @@ class SearchFragment : Fragment() {
                             for (item in response.body()!!)
                                 pagerAdapter.addFragment(AdsFragment(item))
                         }
-                        vpAds.adapter = pagerAdapter
-                        indicator.setViewPager(vpAds)
+                        refreshAdsAdapter()
                     }
                 }
 
@@ -166,4 +174,5 @@ class SearchFragment : Fragment() {
                 }
             })
     }
+
 }

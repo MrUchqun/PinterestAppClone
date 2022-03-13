@@ -5,9 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.media.Image
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.activity.DetailsActivity
-import com.example.pinterestappclone.activity.MainActivity
-import com.example.pinterestappclone.model.PhotoItem
 import com.example.pinterestappclone.model.PhotoList
 import com.google.gson.Gson
-import com.squareup.picasso.Picasso
-import java.util.logging.Handler
 
 class PhotosAdapter(private var context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -55,7 +48,7 @@ class PhotosAdapter(private var context: Context) :
 
         if (holder is PhotoViewHolder) {
             holder.tvDescription.text = photoItem.user!!.bio
-            Picasso.get().load(photoUrl).placeholder(ColorDrawable(Color.parseColor(photoColor)))
+            Glide.with(context).load(photoUrl).placeholder(ColorDrawable(Color.parseColor(photoColor)))
                 .into(holder.ivPhoto)
 
             holder.ivPhoto.setOnClickListener {

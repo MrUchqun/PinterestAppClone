@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.pinterestappclone.R
@@ -22,18 +20,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfilesFragment(var text: String) : Fragment() {
+class ExploreFragment(var text: String) : Fragment() {
 
     private lateinit var rvSearch: RecyclerView
-    private lateinit var adapter: SearchProfileAdapter
+    private lateinit var adapter: ResultPhotosAdapter
     private var currentPage = 1
-    private val perPage = 20
-
+    private var perPage = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = SearchProfileAdapter(requireContext())
-        apiSearchProfiles()
+        adapter = ResultPhotosAdapter(requireContext())
+        apiSearchPhotos()
     }
 
     override fun onResume() {
@@ -56,28 +53,28 @@ class ProfilesFragment(var text: String) : Fragment() {
 
     private fun initViews(view: View) {
         rvSearch = view.findViewById(R.id.rv_search)
-        rvSearch.layoutManager = LinearLayoutManager(requireContext())
+        rvSearch.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!rvSearch.canScrollVertically(1)) {
-                    apiSearchProfiles()
+                    apiSearchPhotos()
                 }
             }
         })
     }
 
-    private fun apiSearchProfiles() {
-        RetrofitHttp.photoService.getSearchProfile(currentPage++, text, perPage)
-            .enqueue(object : Callback<ResultProfiles> {
+    private fun apiSearchPhotos() {
+        RetrofitHttp.photoService.getSearchPhoto(currentPage++, text, perPage)
+            .enqueue(object : Callback<ResultPhotos> {
                 override fun onResponse(
-                    call: Call<ResultProfiles>,
-                    response: Response<ResultProfiles>
+                    call: Call<ResultPhotos>,
+                    response: Response<ResultPhotos>
                 ) {
-                    adapter.addProfiles(response.body()!!.results!!)
+                    adapter.addPhotos(response.body()!!.results!!)
                 }
 
-                override fun onFailure(call: Call<ResultProfiles>, t: Throwable) {
+                override fun onFailure(call: Call<ResultPhotos>, t: Throwable) {
                     Log.e("@@@", t.message.toString())
                     Log.e("@@@", t.toString())
                 }

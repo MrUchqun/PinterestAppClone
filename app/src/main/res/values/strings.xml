@@ -3,4 +3,6 @@
     <string name="related_photo_not_found">Related images has not found</string>
     <string name="tab_explore">Explore</string>
     <string name="tab_profiles">Profiles</string>
+    <string name="tab_updates">Updates</string>
+    <string name="tab_messages">Messages</string>
 </resources>

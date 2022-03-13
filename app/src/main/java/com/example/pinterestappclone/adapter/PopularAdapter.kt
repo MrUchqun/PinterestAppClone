@@ -14,11 +14,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
-import com.example.pinterestappclone.activity.DetailsActivity
-import com.example.pinterestappclone.model.PhotoList
 import com.example.pinterestappclone.model.Topic
-import com.google.gson.Gson
-import com.squareup.picasso.Picasso
 
 class PopularAdapter(private var context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -14,19 +14,4 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:id="@+id/bnv_details"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="?attr/actionBarSize"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        android:layout_marginHorizontal="65dp"-->
-<!--        android:layout_marginBottom="25dp"-->
-<!--        android:background="@drawable/shape_rounded_for_bnv"-->
-<!--        app:elevation="2dp"-->
-<!--        app:itemIconSize="27dp"-->
-<!--        app:itemIconTint="@color/color_bnv_icon"-->
-<!--        app:labelVisibilityMode="unlabeled"-->
-<!--        app:menu="@menu/bottom_nav_menu"-->
-<!--        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>-->
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
