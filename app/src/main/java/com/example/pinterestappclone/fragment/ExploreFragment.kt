@@ -13,14 +13,27 @@ import com.example.pinterestappclone.R
 import com.example.pinterestappclone.adapter.PhotosAdapter
 import com.example.pinterestappclone.adapter.ResultPhotosAdapter
 import com.example.pinterestappclone.adapter.SearchProfileAdapter
+import com.example.pinterestappclone.model.PhotoItem
 import com.example.pinterestappclone.model.ResultPhotos
 import com.example.pinterestappclone.model.ResultProfiles
 import com.example.pinterestappclone.network.RetrofitHttp
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ExploreFragment(var text: String) : Fragment() {
+class ExploreFragment : Fragment() {
+
+    companion object {
+        private const val KEY_STRING = "string"
+        fun newInstance(text: String): ExploreFragment {
+            val args = Bundle()
+            args.putString(KEY_STRING, text)
+            val newFragment = ExploreFragment()
+            newFragment.arguments = args
+            return newFragment
+        }
+    }
 
     private lateinit var rvSearch: RecyclerView
     private lateinit var adapter: ResultPhotosAdapter
@@ -33,9 +46,11 @@ class ExploreFragment(var text: String) : Fragment() {
         apiSearchPhotos()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         rvSearch.adapter = adapter
+        rvSearch.adapter!!.notifyDataSetChanged()
     }
 
     override fun onCreateView(
@@ -65,6 +80,7 @@ class ExploreFragment(var text: String) : Fragment() {
     }
 
     private fun apiSearchPhotos() {
+        val text = arguments?.getString(KEY_STRING)!!
         RetrofitHttp.photoService.getSearchPhoto(currentPage++, text, perPage)
             .enqueue(object : Callback<ResultPhotos> {
                 override fun onResponse(

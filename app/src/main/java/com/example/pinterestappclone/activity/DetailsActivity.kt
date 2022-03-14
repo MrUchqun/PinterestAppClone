@@ -44,7 +44,7 @@ class DetailsActivity : AppCompatActivity() {
     ) {
         val adapter = PagerAdapter(supportFragmentManager)
         for (photoItem in photoList) {
-            adapter.addFragment(DetailsFragment(photoItem))
+            adapter.addFragment(DetailsFragment.newInstance(photoItem))
         }
         viewPager.adapter = adapter
         viewPager.currentItem = position

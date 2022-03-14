@@ -22,13 +22,23 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfilesFragment(var text: String) : Fragment() {
+class ProfilesFragment : Fragment() {
+
+    companion object {
+        private const val KEY_STRING = "string"
+        fun newInstance(text: String): ProfilesFragment {
+            val args = Bundle()
+            args.putString(KEY_STRING, text)
+            val newFragment = ProfilesFragment()
+            newFragment.arguments = args
+            return newFragment
+        }
+    }
 
     private lateinit var rvSearch: RecyclerView
     private lateinit var adapter: SearchProfileAdapter
     private var currentPage = 1
     private val perPage = 20
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +78,7 @@ class ProfilesFragment(var text: String) : Fragment() {
     }
 
     private fun apiSearchProfiles() {
+        val text = arguments?.getString(KEY_STRING)!!
         RetrofitHttp.photoService.getSearchProfile(currentPage++, text, perPage)
             .enqueue(object : Callback<ResultProfiles> {
                 override fun onResponse(

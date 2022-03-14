@@ -24,21 +24,39 @@ import com.example.pinterestappclone.model.PhotoItem
 import com.example.pinterestappclone.model.Pin
 import com.example.pinterestappclone.model.RelatedPhotos
 import com.example.pinterestappclone.network.RetrofitHttp
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailsFragment(var photoItem: PhotoItem) : Fragment() {
+class DetailsFragment : Fragment() {
 
+    companion object {
+        private const val KEY_PHOTO_ITEM = "photoItem"
+        fun newInstance(photoItem: PhotoItem): DetailsFragment {
+            val args = Bundle()
+            args.putString(KEY_PHOTO_ITEM, Gson().toJson(photoItem))
+            val newFragment = DetailsFragment()
+            newFragment.arguments = args
+            return newFragment
+        }
+    }
+
+    private var photoItem: PhotoItem? = null
     private lateinit var pinRepository: PinRepository
     private lateinit var adapter: ResultPhotosAdapter
     private lateinit var tvRelated: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val json = arguments?.getString(KEY_PHOTO_ITEM)
+
+        photoItem = Gson().fromJson(json, PhotoItem::class.java)
         pinRepository = PinRepository(requireActivity().application)
         adapter = ResultPhotosAdapter(requireContext() as DetailsActivity)
-        apiRelatedPhotos(photoItem.id!!)
+
+        apiRelatedPhotos(photoItem!!.id!!)
     }
 
     override fun onCreateView(
@@ -74,29 +92,29 @@ class DetailsFragment(var photoItem: PhotoItem) : Fragment() {
         rvDetails.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rvDetails.adapter = adapter
 
-        val s1 = photoItem.alt_description
-        val s2 = photoItem.description
-        val s3 = photoItem.user!!.name
+        val s1 = photoItem!!.alt_description
+        val s2 = photoItem!!.description
+        val s3 = photoItem!!.user!!.name
 
-        Glide.with(requireContext()).load(photoItem.urls!!.small)
-            .placeholder(ColorDrawable(Color.parseColor(photoItem.color))).into(ivPhoto)
+        Glide.with(requireContext()).load(photoItem!!.urls!!.small)
+            .placeholder(ColorDrawable(Color.parseColor(photoItem!!.color))).into(ivPhoto)
 
-        Glide.with(requireContext()).load(photoItem.user!!.profile_image!!.large)
-            .placeholder(ColorDrawable(Color.parseColor(photoItem.color))).into(ivProfile)
+        Glide.with(requireContext()).load(photoItem!!.user!!.profile_image!!.large)
+            .placeholder(ColorDrawable(Color.parseColor(photoItem!!.color))).into(ivProfile)
 
-        tvFullName.text = photoItem.user!!.name
-        tvFollowers.text = "${photoItem.user!!.total_photos} Followers"
+        tvFullName.text = photoItem!!.user!!.name
+        tvFollowers.text = "${photoItem!!.user!!.total_photos} Followers"
         tvDescription.text = getDescription(s1, s2, s3)
 
         Glide.with(requireContext()).load(profileMe)
-            .placeholder(ColorDrawable(Color.parseColor(photoItem.color))).into(ivProfileMe)
+            .placeholder(ColorDrawable(Color.parseColor(photoItem!!.color))).into(ivProfileMe)
 
         ivBtnBack.setOnClickListener {
             requireActivity().finish()
         }
 
         tvBtnSave.setOnClickListener {
-            pinRepository.savePhoto(Pin(0, photoItem))
+            pinRepository.savePhoto(Pin(0, photoItem!!))
             tvBtnSave.backgroundTintList =
                 requireContext().resources.getColorStateList(R.color.ic_default_color)
         }

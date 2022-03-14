@@ -25,8 +25,17 @@ import com.example.pinterestappclone.network.RetrofitHttp
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.timer
 
 class MyProfileFragment : Fragment() {
+
+    companion object {
+        fun newInstance(): MyProfileFragment {
+            return MyProfileFragment()
+        }
+    }
 
     private lateinit var ivBackground: ImageView
     private lateinit var ivProfile: ImageView
@@ -48,7 +57,7 @@ class MyProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
-        apiUser("mruchqun", requireContext())
+        apiUser()
     }
 
     override fun onResume() {
@@ -75,22 +84,24 @@ class MyProfileFragment : Fragment() {
         val pinList = pinRepository.getAllSavedPhotos()
         val photoList = ArrayList<PhotoItem>()
         for (item in pinList) {
-            item.photoItem?.let { photoList.add(it) }
+            item.photoItem.let { photoList.add(it) }
         }
+
+        if (photoList.size > 0) {
+            Glide.with(requireContext()).load(photoList.random()!!.urls!!.small)
+                .placeholder(ColorDrawable(Color.GRAY)).centerCrop().into(ivBackground)
+        }
+
         photosAdapter.addNewPhotos(photoList)
     }
 
-    private fun apiUser(username: String, context: Context) {
-        RetrofitHttp.photoService.getUser(username).enqueue(object : Callback<ProfileResp> {
+    private fun apiUser() {
+        RetrofitHttp.photoService.getUser("mruchqun").enqueue(object : Callback<ProfileResp> {
             override fun onResponse(call: Call<ProfileResp>, response: Response<ProfileResp>) {
                 val profileResp = response.body()
 
-                Glide.with(requireContext()).load(profileResp?.profile_image?.large)
+                Glide.with(requireActivity()).load(profileResp?.profile_image?.large)
                     .placeholder(ColorDrawable(Color.GRAY)).into(ivProfile)
-
-                if (profileResp?.photos?.size!! > 0)
-                    Glide.with(requireContext()).load(profileResp.photos?.get(0)?.urls?.small)
-                        .placeholder(ColorDrawable(Color.GRAY)).centerCrop().into(ivBackground)
 
                 tvFullName.text = profileResp?.name
                 tvUsername.text = profileResp?.username
@@ -105,4 +116,6 @@ class MyProfileFragment : Fragment() {
             }
         })
     }
+
+    fun <E> ArrayList<E>.random(): E? = if (size > 0) get(Random().nextInt(size)) else null
 }

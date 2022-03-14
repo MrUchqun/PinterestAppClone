@@ -19,14 +19,14 @@
         android:fontFamily="@font/average_sans"
         android:gravity="center"
         android:maxLines="3"
-        android:paddingHorizontal="15dp"
+        android:paddingHorizontal="25dp"
         android:shadowColor="@color/text_color"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
         android:text="Shop Online this products!"
         android:textColor="@color/white"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
 </FrameLayout>

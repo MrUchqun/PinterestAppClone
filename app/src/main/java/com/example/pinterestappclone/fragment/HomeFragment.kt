@@ -27,6 +27,12 @@ import java.lang.reflect.Type
 
 class HomeFragment : Fragment() {
 
+    companion object {
+        fun newInstance(): HomeFragment {
+            return HomeFragment()
+        }
+    }
+
     private lateinit var rvHome: RecyclerView
     private lateinit var adapter: PhotosAdapter
     private var currentPage = 1

@@ -48,6 +48,7 @@ class HelperTextAdapter(context: Context, var helperList: ArrayList<String>) :
         val ivClear: ImageView = view.findViewById(R.id.iv_clear)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val text = helperList[position]
         if (holder is HelperTextViewHolder) {

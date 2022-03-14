@@ -13,21 +13,40 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.model.PhotoItem
+import com.google.gson.Gson
 
-class AdsFragment(var photoItem: PhotoItem) : Fragment() {
+class AdsFragment : Fragment() {
 
+    companion object {
+        private const val KEY_PHOTO_ITEM = "photoItem"
+        fun newInstance(photoItem: PhotoItem): AdsFragment {
+            val args = Bundle()
+            args.putString(KEY_PHOTO_ITEM, Gson().toJson(photoItem))
+            val newFragment = AdsFragment()
+            newFragment.arguments = args
+            return newFragment
+        }
+    }
+
+    private var photoItem: PhotoItem? = null
     private lateinit var ivAds: ImageView
     private lateinit var tvDescription: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val json = arguments?.getString(KEY_PHOTO_ITEM)
+        photoItem = Gson().fromJson(json, PhotoItem::class.java)
+    }
 
     override fun onResume() {
         super.onResume()
 
-        Glide.with(requireContext()).load(photoItem.urls!!.regular)
-            .placeholder(ColorDrawable(Color.parseColor(photoItem.color)))
+        Glide.with(requireContext()).load(photoItem!!.urls!!.regular)
+            .placeholder(ColorDrawable(Color.parseColor(photoItem!!.color)))
             .into(ivAds)
 
-        if (!photoItem.description.isNullOrEmpty()) {
-            tvDescription.text = photoItem.description
+        if (!photoItem!!.description.isNullOrEmpty()) {
+            tvDescription.text = photoItem!!.description
         }
     }
 

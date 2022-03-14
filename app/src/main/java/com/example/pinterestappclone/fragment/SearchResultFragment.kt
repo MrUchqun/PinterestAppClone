@@ -31,14 +31,28 @@ import com.google.android.material.tabs.TabLayout
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
-class SearchResultFragment(private val textParent: String?) : Fragment() {
+class SearchResultFragment : Fragment() {
+
+    companion object {
+        private const val KEY_STRING = "string"
+        fun newInstance(text: String?): SearchResultFragment {
+            val args = Bundle()
+            args.putString(KEY_STRING, text)
+            val newFragment = SearchResultFragment()
+            newFragment.arguments = args
+            return newFragment
+        }
+    }
 
     private lateinit var prefsManager: PrefsManager
     private lateinit var helperAdapter: HelperTextAdapter
+    private var textParent: String? = null
     private var clickCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        textParent = arguments?.getString(KEY_STRING)
 
         // initialize SharedPreferences manager
         prefsManager = PrefsManager.getInstance(requireContext())!!
@@ -111,6 +125,7 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
         // set cancel button function when clicked
         tvCancel.setOnClickListener {
             clearFragments()
+            hideKeyboardFrom(requireContext(), view, etSearch)
         }
 
         // set back button function when clicked
@@ -151,7 +166,7 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
                     } else {
 
                         // open new fragment for research
-                        replaceFragment(SearchResultFragment(etSearch.text.toString()))
+                        replaceFragment(newInstance(etSearch.text.toString()))
 
                         // hide keyboard
                         hideKeyboardFrom(requireContext(), view, etSearch)
@@ -189,7 +204,7 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
         helperAdapter.onItemClick(object : HelperTextAdapter.RecyclerViewItemClick {
             override fun onItemClick(text: String) {
                 if (clickCount != 0)
-                    replaceFragment(SearchResultFragment(text))
+                    replaceFragment(newInstance(text))
                 else {
                     etSearch.setText(text)
                     visibleViewPager(rvHelper, llContainer, vpFilter, tlFilter, text)
@@ -197,14 +212,6 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
 
             }
         })
-
-    }
-
-    private fun openFragment(){
-
-    }
-
-    private fun closeFragment(){
 
     }
 
@@ -262,11 +269,11 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
             recyclerView.visibility = GONE
             linearLayout.visibility = VISIBLE
 
-            val pagerAdapter = PagerAdapter(parentFragmentManager)
-            pagerAdapter.addFragment(ExploreFragment(text))
+            val pagerAdapter = PagerAdapter(childFragmentManager)
+            pagerAdapter.addFragment(ExploreFragment.newInstance(text))
             pagerAdapter.addTitle(getString(R.string.tab_explore))
 
-            pagerAdapter.addFragment(ProfilesFragment(text))
+            pagerAdapter.addFragment(ProfilesFragment.newInstance(text))
             pagerAdapter.addTitle(getString(R.string.tab_profiles))
 
             viewPager.adapter = pagerAdapter

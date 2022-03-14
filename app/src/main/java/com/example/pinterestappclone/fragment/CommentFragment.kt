@@ -16,10 +16,18 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.adapter.PagerAdapter
+import com.example.pinterestappclone.model.PhotoItem
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 
 class CommentFragment : Fragment() {
+
+    companion object {
+        fun newInstance(): CommentFragment {
+            return CommentFragment()
+        }
+    }
 
     private lateinit var pagerAdapter: PagerAdapter
     private lateinit var vpFilter: ViewPager
@@ -44,9 +52,8 @@ class CommentFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        tlFilter = view.findViewById<TabLayout>(R.id.tl_filter)
+        tlFilter = view.findViewById(R.id.tl_filter)
         vpFilter = view.findViewById(R.id.vp_filter)
-        vpFilter.adapter = PagerAdapter(parentFragmentManager)
         val ivParams = view.findViewById<ImageView>(R.id.iv_params)
 
         refreshAdapter()
@@ -79,9 +86,9 @@ class CommentFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        pagerAdapter = PagerAdapter(requireActivity().supportFragmentManager)
-        pagerAdapter.addFragment(UpdateFragment())
-        pagerAdapter.addFragment(MessagesFragment())
+        pagerAdapter = PagerAdapter(childFragmentManager)
+        pagerAdapter.addFragment(UpdateFragment.newInstance())
+        pagerAdapter.addFragment(MessagesFragment.newInstance())
         pagerAdapter.addTitle(getString(R.string.tab_updates))
         pagerAdapter.addTitle(getString(R.string.tab_messages))
     }

@@ -35,6 +35,10 @@ class SearchFragment : Fragment() {
         const val PORTRAIT = "portrait"
         const val DELAY_MS: Long = 2500 //delay in milliseconds before task is to be executed
         const val PERIOD_MS: Long = 5000 // time in milliseconds between successive task executions.
+
+        fun newInstance(): SearchFragment {
+            return SearchFragment()
+        }
     }
 
     private lateinit var ideasAdapter: IdeaPageAdapter
@@ -48,7 +52,7 @@ class SearchFragment : Fragment() {
         super.onCreate(savedInstanceState)
         ideasAdapter = IdeaPageAdapter(requireContext())
         popularAdapter = PopularAdapter(requireContext())
-        pagerAdapter = PagerAdapter(requireActivity().supportFragmentManager)
+        pagerAdapter = PagerAdapter(parentFragmentManager)
 
         apiRandomPhotos("science", PORTRAIT, 10, 1)
         apiTopics(1, 8)
@@ -76,7 +80,7 @@ class SearchFragment : Fragment() {
         val tvSearch = view.findViewById<TextView>(R.id.tv_search)
 
         tvSearch.setOnClickListener {
-            replaceFragment(SearchResultFragment(null))
+            replaceFragment(SearchResultFragment.newInstance(null))
         }
 
         setupAds(view)
@@ -86,7 +90,7 @@ class SearchFragment : Fragment() {
 
     private fun replaceFragment(fragment: Fragment) {
         val backStateName = fragment.javaClass.name
-        val manager: FragmentManager = parentFragmentManager
+        val manager: FragmentManager = childFragmentManager
         val ft: FragmentTransaction = manager.beginTransaction()
         ft.replace(R.id.view_container, fragment)
         ft.addToBackStack(backStateName)
@@ -147,7 +151,7 @@ class SearchFragment : Fragment() {
                     if (number == 2) {
                         if (pagerAdapter.fragments.size == 0) {
                             for (item in response.body()!!)
-                                pagerAdapter.addFragment(AdsFragment(item))
+                                pagerAdapter.addFragment(AdsFragment.newInstance(item))
                         }
                         refreshAdsAdapter()
                     }

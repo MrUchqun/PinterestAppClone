@@ -9,6 +9,12 @@ import com.example.pinterestappclone.R
 
 class MessagesFragment : Fragment() {
 
+    companion object {
+        fun newInstance(): MessagesFragment {
+            return MessagesFragment()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -37,16 +37,15 @@ class MainActivity : AppCompatActivity() {
 
         vpMain = findViewById(R.id.vp_main)
         vpMain.adapter = setupAdapter()
-        vpMain.offscreenPageLimit = 4
         connectionVpWithBnv(bnvMain, vpMain)
     }
 
     private fun setupAdapter(): PagerAdapter {
         val adapter = PagerAdapter(supportFragmentManager)
-        adapter.addFragment(HomeFragment())
-        adapter.addFragment(SearchFragment())
-        adapter.addFragment(CommentFragment())
-        adapter.addFragment(MyProfileFragment())
+        adapter.addFragment(HomeFragment.newInstance())
+        adapter.addFragment(SearchFragment.newInstance())
+        adapter.addFragment(CommentFragment.newInstance())
+        adapter.addFragment(MyProfileFragment.newInstance())
         return adapter
     }
 

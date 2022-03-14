@@ -20,6 +20,12 @@ import retrofit2.Response
 
 class UpdateFragment : Fragment() {
 
+    companion object {
+        fun newInstance(): UpdateFragment {
+            return UpdateFragment()
+        }
+    }
+
     private lateinit var updatesAdapter: UpdatesAdapter
     private lateinit var rvUpdates: RecyclerView
     private var currentPage = 1
