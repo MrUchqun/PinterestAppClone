@@ -18,7 +18,10 @@ import com.example.pinterestappclone.R
 import com.example.pinterestappclone.activity.DetailsActivity
 import com.example.pinterestappclone.activity.MainActivity.Companion.profileMe
 import com.example.pinterestappclone.adapter.ResultPhotosAdapter
+import com.example.pinterestappclone.database.PinRepository
+//import com.example.pinterestappclone.database.SavedPhotoRepository
 import com.example.pinterestappclone.model.PhotoItem
+import com.example.pinterestappclone.model.Pin
 import com.example.pinterestappclone.model.RelatedPhotos
 import com.example.pinterestappclone.network.RetrofitHttp
 import retrofit2.Call
@@ -27,11 +30,13 @@ import retrofit2.Response
 
 class DetailsFragment(var photoItem: PhotoItem) : Fragment() {
 
+    private lateinit var pinRepository: PinRepository
     private lateinit var adapter: ResultPhotosAdapter
     private lateinit var tvRelated: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        pinRepository = PinRepository(requireActivity().application)
         adapter = ResultPhotosAdapter(requireContext() as DetailsActivity)
         apiRelatedPhotos(photoItem.id!!)
     }
@@ -46,7 +51,7 @@ class DetailsFragment(var photoItem: PhotoItem) : Fragment() {
         return view
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "UseCompatLoadingForColorStateLists")
     private fun initViews(view: View) {
         val ivBtnBack = view.findViewById<ImageView>(R.id.iv_btn_back)
         val ivBtnMore = view.findViewById<ImageView>(R.id.iv_btn_more)
@@ -88,6 +93,12 @@ class DetailsFragment(var photoItem: PhotoItem) : Fragment() {
 
         ivBtnBack.setOnClickListener {
             requireActivity().finish()
+        }
+
+        tvBtnSave.setOnClickListener {
+            pinRepository.savePhoto(Pin(0, photoItem))
+            tvBtnSave.backgroundTintList =
+                requireContext().resources.getColorStateList(R.color.ic_default_color)
         }
     }
 

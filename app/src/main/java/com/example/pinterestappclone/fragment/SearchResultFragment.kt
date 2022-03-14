@@ -153,6 +153,21 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
                         // open new fragment for research
                         replaceFragment(SearchResultFragment(etSearch.text.toString()))
 
+                        // hide keyboard
+                        hideKeyboardFrom(requireContext(), view, etSearch)
+
+                        // hide cancel button
+                        tvCancel.visibility = GONE
+
+                        // show back button
+                        ivBtnBack.visibility = VISIBLE
+
+                        // set text on etSearch
+                        etSearch.setText(textParent)
+
+                        // open search page
+                        visibleViewPager(rvHelper, llContainer, vpFilter, tlFilter, textParent)
+
                     }
                 }
             }
@@ -163,15 +178,34 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
         etSearch.setOnTouchListener { _, _ ->
             // show rvHelper
             refreshAdapter(rvHelper)
-
             // gone back button
             ivBtnBack.visibility = GONE
-
             // show cancel button
             tvCancel.visibility = VISIBLE
 
             false
         }
+
+        helperAdapter.onItemClick(object : HelperTextAdapter.RecyclerViewItemClick {
+            override fun onItemClick(text: String) {
+                if (clickCount != 0)
+                    replaceFragment(SearchResultFragment(text))
+                else {
+                    etSearch.setText(text)
+                    visibleViewPager(rvHelper, llContainer, vpFilter, tlFilter, text)
+                }
+
+            }
+        })
+
+    }
+
+    private fun openFragment(){
+
+    }
+
+    private fun closeFragment(){
+
     }
 
     private fun refreshAdapter(recyclerView: RecyclerView) {
@@ -225,7 +259,6 @@ class SearchResultFragment(private val textParent: String?) : Fragment() {
         text: String?
     ) {
         if (!text.isNullOrEmpty()) {
-
             recyclerView.visibility = GONE
             linearLayout.visibility = VISIBLE
 

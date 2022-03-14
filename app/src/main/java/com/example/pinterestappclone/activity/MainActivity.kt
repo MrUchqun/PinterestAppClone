@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         vpMain = findViewById(R.id.vp_main)
         vpMain.adapter = setupAdapter()
+        vpMain.offscreenPageLimit = 4
         connectionVpWithBnv(bnvMain, vpMain)
     }
 
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                 }
             false
         }
+
 
         vpMain.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {

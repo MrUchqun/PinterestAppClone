@@ -17,6 +17,8 @@ class HelperTextAdapter(context: Context, var helperList: ArrayList<String>) :
 
     private val prefsManager = PrefsManager.getInstance(context)
 
+    private var itemClicked: RecyclerViewItemClick? = null
+
     fun addHelper(text: String) {
         if (helperList.contains(text)) helperList.remove(text)
         val newList = ArrayList<String>()
@@ -54,10 +56,23 @@ class HelperTextAdapter(context: Context, var helperList: ArrayList<String>) :
             holder.ivClear.setOnClickListener {
                 clearHelper(text)
             }
+
+            holder.tvHelp.setOnClickListener {
+                itemClicked?.onItemClick(text);
+                notifyDataSetChanged()
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return helperList.size
+    }
+
+    fun onItemClick(mclick: RecyclerViewItemClick) {
+        this.itemClicked = mclick
+    }
+
+    interface RecyclerViewItemClick {
+        fun onItemClick(text: String)
     }
 }

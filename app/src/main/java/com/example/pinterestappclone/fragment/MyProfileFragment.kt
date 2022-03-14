@@ -11,8 +11,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
+import com.example.pinterestappclone.adapter.PhotosAdapter
+import com.example.pinterestappclone.adapter.ResultPhotosAdapter
+import com.example.pinterestappclone.database.PinRepository
+import com.example.pinterestappclone.model.PhotoItem
+//import com.example.pinterestappclone.database.SavedPhotoRepository
 import com.example.pinterestappclone.model.profile.ProfileResp
 import com.example.pinterestappclone.network.RetrofitHttp
 import retrofit2.Call
@@ -26,6 +33,9 @@ class MyProfileFragment : Fragment() {
     private lateinit var tvFullName: TextView
     private lateinit var tvUsername: TextView
     private lateinit var tvFollowers: TextView
+    private lateinit var rvSavedPhotos: RecyclerView
+    private lateinit var photosAdapter: ResultPhotosAdapter
+    private lateinit var pinRepository: PinRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +48,12 @@ class MyProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
+        apiUser("mruchqun", requireContext())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshAdapter()
     }
 
     private fun initViews(view: View) {
@@ -46,8 +62,22 @@ class MyProfileFragment : Fragment() {
         tvFullName = view.findViewById(R.id.tv_fullName)
         tvUsername = view.findViewById(R.id.tv_username)
         tvFollowers = view.findViewById(R.id.tv_followers)
+        rvSavedPhotos = view.findViewById(R.id.rv_saved_photos)
 
-        apiUser("mruchqun", requireContext())
+        rvSavedPhotos.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        pinRepository = PinRepository(requireActivity().application)
+        photosAdapter = ResultPhotosAdapter(requireContext())
+        rvSavedPhotos.adapter = photosAdapter
+    }
+
+    private fun refreshAdapter() {
+        val pinList = pinRepository.getAllSavedPhotos()
+        val photoList = ArrayList<PhotoItem>()
+        for (item in pinList) {
+            item.photoItem?.let { photoList.add(it) }
+        }
+        photosAdapter.addNewPhotos(photoList)
     }
 
     private fun apiUser(username: String, context: Context) {

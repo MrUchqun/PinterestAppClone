@@ -3,7 +3,7 @@ package com.example.pinterestappclone.model
 class PhotoList : ArrayList<PhotoItem>()
 
 data class PhotoItem(
-    val alt_description: Any? = null,
+    val alt_description: String? = null,
     val blur_hash: String? = null,
     val categories: List<Any>? = null,
     val color: String? = null,

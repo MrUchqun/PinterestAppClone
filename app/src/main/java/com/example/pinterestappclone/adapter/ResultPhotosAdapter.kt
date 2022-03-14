@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.pinterestappclone.R
 import com.example.pinterestappclone.activity.DetailsActivity
 import com.example.pinterestappclone.activity.MainActivity
+import com.example.pinterestappclone.managers.PrefsManager
 import com.example.pinterestappclone.model.PhotoItem
 import com.example.pinterestappclone.model.PhotoList
 import com.google.gson.Gson
@@ -22,6 +23,7 @@ import com.google.gson.Gson
 class ResultPhotosAdapter(private var context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private val prefsManager = PrefsManager.getInstance(context)
     private var photoList = ArrayList<PhotoItem>()
 
     @SuppressLint("NotifyDataSetChanged")
@@ -69,9 +71,8 @@ class ResultPhotosAdapter(private var context: Context) :
 
     private fun callDetails(position: Int) {
         val intent = Intent(context, DetailsActivity::class.java)
-        val json = Gson().toJson(photoList)
-        intent.putExtra("photoList", json)
         intent.putExtra("position", position)
+        prefsManager!!.saveArrayList(PrefsManager.KEY_PHOTO_LIST, photoList)
         context.startActivity(intent)
     }
 

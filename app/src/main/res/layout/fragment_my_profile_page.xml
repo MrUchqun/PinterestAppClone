@@ -1,153 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="260dp">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/iv_background"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="#D3D3D3" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/gradient_profile_page" />
-
-        </FrameLayout>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_profile"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:padding="1dp"
-            android:src="@color/black"
-            app:shapeAppearanceOverlay="@style/circle"
-            app:strokeColor="@color/white"
-            app:strokeWidth="1dp" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="15dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="260dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:src="#D3D3D3" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/gradient_profile_page" />
+
+                </FrameLayout>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:padding="1dp"
+                    android:src="@color/black"
+                    app:shapeAppearanceOverlay="@style/circle"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="1dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="start|center_vertical">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_settings"
+                            app:tint="@color/white" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/ic_share"
+                        app:tint="@color/white" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_baseline_more_horiz_24"
+                        app:tint="@color/white" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_fullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Mobile Developer"
+                android:textColor="@color/black"
+                android:textSize="27sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="mruchqun"
+                android:textColor="#656565"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_followers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="0 followers • 0 following"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start|center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="7.5dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rounded_categories"
+                    android:backgroundTint="#ECECEC"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/iv_ic_search"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_bnv_search" />
+
+                    <TextView
+                        android:id="@+id/tv_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="15dp"
+                        android:gravity="center_vertical"
+                        android:text="Search for ideas"
+                        android:textColor="#656565"
+                        android:textSize="17sp" />
+
+                </LinearLayout>
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_settings"
-                    app:tint="@color/white" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="7.5dp"
+                    android:src="@drawable/ic_round_add_24"
+                    app:tint="@color/black" />
 
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/ic_share"
-                app:tint="@color/white" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_baseline_more_horiz_24"
-                app:tint="@color/white" />
-
-        </LinearLayout>
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/tv_fullName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="Mobile Developer"
-        android:textColor="@color/black"
-        android:textSize="27sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tv_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="mruchqun"
-        android:textColor="#656565"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/tv_followers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="0 followers • 0 following"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="7.5dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/shape_rounded_categories"
-            android:backgroundTint="#DFDFDF"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/iv_ic_search"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_bnv_search" />
-
-            <TextView
-                android:id="@+id/tv_search"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_saved_photos"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:gravity="center_vertical"
-                android:text="Search for ideas"
-                android:textColor="#656565"
-                android:textSize="17sp" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="7.5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="75dp" />
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="7.5dp"
-            android:src="@drawable/ic_round_add_24"
-            app:tint="@color/black" />
+    </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

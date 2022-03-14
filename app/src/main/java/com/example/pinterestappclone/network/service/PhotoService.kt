@@ -12,7 +12,7 @@ interface PhotoService {
 
     companion object {
 
-        private const val ACCESS_KEY = "ACCESS_KEY"
+        private const val ACCESS_KEY = "ACCESS_KEY_1"
         const val client_id = "Client-ID"
     }
 
